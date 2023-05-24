@@ -12,9 +12,9 @@ const db = mysql.createPool({
 });
 
 // 登录接口
-api.get("/login", (req, res) => {
+api.post("/login", (req, res) => {
   const queryLogin = "select `password` from `users` where `username`=?";
-  const username = req.query.username;
+  const username = req.body.username;
   db.query(queryLogin, [username], (err, results) => {
     if (err) {
       console.log("登录接口出错！", err.message);
@@ -22,7 +22,7 @@ api.get("/login", (req, res) => {
     }
     if (results[0]) {
       const passwordMD5 = results[0].password;
-      const passwordNow = md5(req.query.password);
+      const passwordNow = md5(req.body.password);
 
       if (passwordMD5 === passwordNow) {
         res.send({ err: 2 }); //表示登录成功
@@ -36,9 +36,9 @@ api.get("/login", (req, res) => {
 });
 
 // 注册接口
-api.get("/register", (req, res) => {
+api.post("/register", (req, res) => {
   const queryExisted = "select count(*) from `users` where `username`=?";
-  const username = req.query.username;
+  const username = req.body.username;
   db.query(queryExisted, [username], (err, results) => {
     if (err) {
       console.log("登录接口出错！", err.message);
@@ -48,10 +48,10 @@ api.get("/register", (req, res) => {
     if (isExsited) {
       res.send({ err: 0 }); // 表示用户已存在，请直接登录
     } else {
-      const passwordNow = md5(req.query.password); // md5加密后的密码
+      const passwordNow = md5(req.body.password); // md5加密后的密码
       const queryRegister =
         "INSERT INTO `users` (`username`, `nickname`, `password`) VALUES (?, ?, ?)";
-      const data = [req.query.username, req.query.nickname, passwordNow];
+      const data = [req.body.username, req.body.nickname, passwordNow];
 
       db.query(queryRegister, data, (err, results) => {
         if (err) {
@@ -94,19 +94,19 @@ api.get("/credit", (req, res) => {
 });
 
 // 增加自己积分接口
-api.get("/addcredit", (req, res) => {
+api.post("/addcredit", (req, res) => {
   const querycredit = "select `credit` from `users` where `username`=?";
-  db.query(querycredit, req.query.username, (err, results) => {
+  db.query(querycredit, req.body.username, (err, results) => {
     if (err) {
       console.log("登录接口出错！", err.message);
       res.send("数据库出错了！");
     }
     const creditBase = results[0].credit;
-    const credit = Number(creditBase) + Number(req.query.credit);
+    const credit = Number(creditBase) + Number(req.body.credit);
     const queryAddCredit = "update `users` set `credit`=? where `username`=?";
     db.query(
       queryAddCredit,
-      [String(credit), req.query.username],
+      [String(credit), req.body.username],
       (err, results) => {
         if (err) {
           console.log("登录接口出错！", err.message);
@@ -136,9 +136,9 @@ api.get("/difficulty", (req, res) => {
 });
 
 // 增加自己难度接口
-api.get("/adddifficulty", (req, res) => {
+api.post("/adddifficulty", (req, res) => {
   const queryDifficulty = "select `curdif` from `users` where `username`=?";
-  db.query(queryDifficulty, req.query.username, (err, results) => {
+  db.query(queryDifficulty, req.body.username, (err, results) => {
     if (err) {
       console.log("登录接口出错！", err.message);
       res.send("数据库出错了！");
@@ -148,7 +148,7 @@ api.get("/adddifficulty", (req, res) => {
     const queryAddCredit = "update `users` set `curdif`=? where `username`=?";
     db.query(
       queryAddCredit,
-      [String(difficulty), req.query.username],
+      [String(difficulty), req.body.username],
       (err, results) => {
         if (err) {
           console.log("登录接口出错！", err.message);
@@ -166,9 +166,9 @@ api.get("/adddifficulty", (req, res) => {
 });
 
 // 清空自己难度接口
-api.get("/cleardifficulty", (req, res) => {
+api.post("/cleardifficulty", (req, res) => {
   const queryClear = "update `users` set `curdif`=? where `username`=?";
-  db.query(queryClear, ["1", req.query.username], (err, results) => {
+  db.query(queryClear, ["1", req.body.username], (err, results) => {
     if (err) {
       console.log("登录接口出错！", err.message);
       res.send("数据库出错了！");

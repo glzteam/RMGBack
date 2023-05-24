@@ -11,7 +11,7 @@
 #### 请求URL
 
 - URL：`/api/login`
-- Method：`GET`
+- Method：`POST`
 
 #### 请求参数
 
@@ -35,7 +35,7 @@
 #### 请求URL
 
 - URL：`/api/register`
-- Method：`GET`
+- Method：`POST`
 
 #### 请求参数
 
@@ -98,7 +98,7 @@
 #### 请求URL
 
 - URL：`/api/addcredit`
-- Method：`GET`
+- Method：`POST`
 
 #### 请求参数
 
@@ -145,7 +145,7 @@
 #### 请求URL
 
 - URL：`/api/adddifficulty`
-- Method：`GET`
+- Method：`POST`
 
 #### 请求参数
 
@@ -168,7 +168,7 @@
 #### 请求URL
 
 - URL：`/api/cleardifficulty`
-- Method：`GET`
+- Method：`POST`
 
 #### 请求参数
 
@@ -190,7 +190,7 @@
 
 列出接口版本历史记录，包括版本号、更新内容、发布日期等。
 
-版本号：v1.0.0
+版本号：v1.1.0
 
 更新内容：正式发布
 
